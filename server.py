@@ -79,7 +79,9 @@ def purchasePlaces():
         return redirect(url_for('book', competition=request.form['competition'], club=request.form['club']))
 
 
-# TODO: Add route for points display
+@app.route('/pointsDisplay')
+def pointsDisplay():
+    return render_template('points.html', clubs=clubs)
 
 
 @app.route('/logout')
