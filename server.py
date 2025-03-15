@@ -69,10 +69,10 @@ def purchasePlaces():
         # Vérifier les contraintes
         if places_required <= 0:
             raise ValueError("Invalid number of places. Please enter a positive number.")
-        if places_required > 12:
-            raise ValueError("You cannot book more than 12 places in a competition.")
         if places_required > int(club['points']):
             raise ValueError("You do not have enough points to make this booking.")
+        if places_required > 12:
+            raise ValueError("You cannot book more than 12 places in a competition.")
         if places_required > int(competition['numberOfPlaces']):
             raise ValueError("Not enough places available in this competition.")
 
