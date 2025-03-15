@@ -24,18 +24,25 @@ clubs = loadClubs()
 def index():
     return render_template('index.html')
 
+
 @app.route('/showSummary', methods=['POST'])
 def showSummary():
     try:
         email = request.form['email']
-        print(f"Email submitted: {email}")  # Debug
-        club = [club for club in clubs if club['email'] == email][0]
+        if not email.strip():  # Vérifie si l'email est vide ou ne contient que des espaces
+            raise ValueError("Email cannot be empty. Please try again.")
+
+        club = next(club for club in clubs if club['email'] == email)
         return render_template('welcome.html', club=club, competitions=competitions)
-    except IndexError:
+
+    except StopIteration:
         flash("Email not found. Please try again.")
         return redirect(url_for('index'))
     except KeyError:
         flash("Invalid form submission. Please try again.")
+        return redirect(url_for('index'))
+    except ValueError as e:
+        flash(str(e))
         return redirect(url_for('index'))
     except Exception as e:
         flash(f"An unexpected error occurred: {str(e)}")
