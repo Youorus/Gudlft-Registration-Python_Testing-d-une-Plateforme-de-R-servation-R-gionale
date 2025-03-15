@@ -50,9 +50,13 @@ def showSummary():
 
 @app.route('/book/<competition>/<club>')
 def book(competition, club):
-    foundClub = next(c for c in clubs if c['name'] == club)
-    foundCompetition = next(c for c in competitions if c['name'] == competition)
-    return render_template('booking.html', club=foundClub, competition=foundCompetition)
+    try:
+        foundClub = next(c for c in clubs if c['name'] == club)
+        foundCompetition = next(c for c in competitions if c['name'] == competition)
+        return render_template('booking.html', club=foundClub, competition=foundCompetition)
+    except StopIteration:
+        flash("Competition or club not found. Please try again.")
+        return redirect(url_for('index'))
 
 @app.route('/purchasePlaces', methods=['POST'])
 def purchasePlaces():
